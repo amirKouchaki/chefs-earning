@@ -1,4 +1,6 @@
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -45,7 +47,6 @@ public class Main {
                 case 2:
                     username = "";
                     password = "";
-                    //TODO : can be refactored
                     while (!Chef.attemptLogin(username,password)) {
                         System.out.println("please enter your username");
                         username = scanner.next();
@@ -60,8 +61,30 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("show chefs");
-                    break;
+                    System.out.println("""
+                            1.Master Chef
+                            2.Second Class Chef
+                            3.Assistant Chef""");
+                    StringBuilder fileName = new StringBuilder();
+                    switch (scanner.nextInt()){
+                        case 1 -> fileName.append(Chef.Roles.MASTER_CHEF);
+                        case 2 -> fileName.append(Chef.Roles.SECOND_CLASS_CHEF);
+                        case 3 -> fileName.append(Chef.Roles.ASSISTANT_CHEF);
+                    }
+                    try {
+                        FileInputStream fileIn = new FileInputStream(fileName.append(".txt").toString());
+                        ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                        ArrayList chefs = (ArrayList) objectIn.readObject();
+                        objectIn.close();
+                        for (Object chefToShow:
+                                chefs)
+                            System.out.println(chefToShow.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.exit(0);
+                    }
+
+
                 case 0:
                     break Outer;
             }

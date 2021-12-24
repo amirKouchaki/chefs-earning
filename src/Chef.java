@@ -1,11 +1,13 @@
-public abstract class Chef {
+import java.io.Serializable;
+
+public abstract class Chef implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final int minAge = 18;
     protected String firstName;
     protected String lastName;
     protected int age;
     protected String username;
     protected String password;
-
 
     public Chef(String firstName, String lastName, int age, String username, String password) {
         this.firstName = firstName;
@@ -28,8 +30,8 @@ public abstract class Chef {
         return chef.password.equals(password);
     }
 
-    //TODO
-    protected abstract int earning();
+
+    protected abstract double earning();
 
     public static int getMinAge() {
         return minAge;
@@ -74,4 +76,12 @@ public abstract class Chef {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    enum Roles{
+        MASTER_CHEF,
+        SECOND_CLASS_CHEF,
+        ASSISTANT_CHEF
+    }
+
 }
+
